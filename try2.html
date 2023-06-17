@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Contact List</title>
+  <style>
+    :root {
+      --body-bg: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      --msger-bg: #fff;
+      --border: 2px solid #ddd;
+      --left-msg-bg: #ececec;
+      --right-msg-bg: #579ffb;
+    }
+
+    html {
+      box-sizing: border-box;
+    }
+
+    *,
+    *:before,
+    *:after {
+      margin: 0;
+      padding: 0;
+      box-sizing: inherit;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-image: var(--body-bg);
+      font-family: Helvetica, sans-serif;
+    }
+
+    .msger {
+      display: flex;
+      flex-flow: column wrap;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 867px;
+      margin: 25px 10px;
+      height: calc(100% - 50px);
+      border: var(--border);
+      border-radius: 5px;
+      background: var(--msger-bg);
+      box-shadow: 0 15px 15px. rgba(0, 0, 0, 0.1);
+    }
+
+    .msger-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 15px;
+      border-bottom: var(--border);
+      background: #fff;
+    }
+
+    .msger-header-title {
+      display: flex;
+      align-items: center;
+      color: #4e4e4e;
+      font-weight: bold;
+    }
+
+    .msger-header-options span {
+      color: #8b8b8b;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .msger-chat {
+      flex: 1;
+      padding: 25px;
+      overflow-y: auto;
+    }
+
+    .msg {
+      display: flex;
+      align-items: flex-end;
+      margin-bottom: 10px;
+    }
+
+    .msg-img {
+      width: 50px;
+      height: 50px;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      border-radius: 50%;
+    }
+
+    .msg-bubble {
+      max-width: 450px;
+      padding: 15px;
+      border-radius: 15px;
+      background: var(--left-msg-bg);
+    }
+
+    .msg-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .msg-info-name {
+      margin-right: 10px;
+      font-weight: bold;
+    }
+
+    .msg-info-time {
+      font-size: 0.85em;
+    }
+
+    .
+    .msg-text {
+        font-size: 0.9em;
+        word-wrap: break-word;
+      }
+  
+      .msger-inputarea {
+        display: flex;
+        padding: 10px;
+        background: #fff;
+      }
+  
+      .msger-input {
+        flex: 1;
+        border: none;
+        padding: 10px;
+        font-size: 0.85em;
+      }
+  
+      .msger-send-btn {
+        padding: 10px;
+        background: var(--right-msg-bg);
+        color: #fff;
+        font-size: 0.85em;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+  
+      .container {
+        display: flex;
+        height: 100vh;
+      }
+  
+      .contacts {
+        background-color: #f2f2f2;
+        width: 25%;
+        padding: 20px;
+      }
+  
+      .contact-item {
+        margin-bottom: 10px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        padding: 10px;
+        transition: background-color 0.3s ease;
+      }
+  
+      .contact-item:hover {
+        background-color: #f9f9f9;
+      }
+  
+      .contact-item.selected {
+        background-color: #bfbfbf;
+      }
+  
+      .contact-item.selected:hover {
+        background-color: #bfbfbf;
+        cursor: default;
+      }
+  
+      .content {
+        width: 75%;
+      }
+    </style>
+  </head>
+  
+  <body style="margin: 0; padding: 0; height: 100vh; display: flex; justify-content: center; align-items: center;">
+    <div class="container">
+      <!-- Rest of your HTML content -->
+    </div>
+  
+    <script>
+      // JavaScript code here
+    </script>
+  </body>
+  
+  </html>
+  

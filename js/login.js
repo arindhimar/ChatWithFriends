@@ -20,16 +20,13 @@ $(document).ready(function () {
                     // dataType: "dataType",
                     success: function (response) {
                         // console.log(response);
-                        if (response == 'admin') {
-                            window.location.href = 'adminsuc.php';
-                        }
-                        else if (response == 'user') {
-                            window.location.href = 'usersuc.php';
-                        }
-                        else {
+                        if (response == 'invalid') {
                             $('#loginmsg').fadeIn(1000).delay(2000).fadeOut(1000);
                             $('#loginmsg').addClass('alert alert-danger mt-3');
                             $('#loginmsg').html('Invalid Credenetials');
+                        }
+                        else  {
+                            window.location.href = response;
                         }
                     }
                 });

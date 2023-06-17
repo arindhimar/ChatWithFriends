@@ -34,19 +34,19 @@
             <li>
                 <a href="#" id='navaddacc'>
                     <i class='bx bx-box'></i>
-                    <span class="links_name" id='navaccdisp'>Add Accounts</span>
+                    <span class="links_name" >Add Accounts</span>
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="#" id="navaddcat">
                     <i class='bx bx-list-ul'></i>
-                    <span class="links_name">Add Account</span>
+                    <span class="links_name" >Add Category</span>
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="#" id='navdispchat'>
                     <i class='bx bx-pie-chart-alt-2'></i>
-                    <span class="links_name">Analytics</span>
+                    <span class="links_name" >Chats</span>
                 </a>
             </li>
             <li>
@@ -99,10 +99,10 @@
                 <i class='bx bx-menu sidebarBtn' id='togglesidebar'></i>
                 <span class="dashboard">Dashboard</span>
             </div>
-            <!-- <div class="search-box">
-                <input type="text" placeholder="Search...">
+            <div class="search-box">
+                <input type="text" placeholder="Search..." id='searchtxt'>
                 <i class='bx bx-search'></i>
-            </div> -->
+            </div>
             <div class="profile-details">
                 <img src="images/defcard.jpg" alt="404">
                 <span class="admin_name">Admin</span>
@@ -276,12 +276,18 @@
             </div> -->
 
             <div id='divaccdisp'>
-                Disp
+                <div id='actstatus'>
+
+                </div>
+                <div class="row row-cols-1 row-cols-md-4 g-4" id='dispdata'>
+
+                </div>
+
             </div>
             <div id='divaddacc'>
 
                 <div id='addaccstatus'>
-                    
+
                 </div>
 
                 <form>
@@ -329,6 +335,42 @@
                 </div>
 
             </div>
+
+            <div id='addcatdiv'>
+                <div class="col d-flex justify-content-center">
+                    <div class="card text-center " style="width: 50%;">
+                        <div class="card-header">
+                            <h5 class="card-title">Add Category</h5>
+                        </div>
+                        <div class="card-body">
+                            <input type="text" class="form-control" id="txtaddcat" placeholder="Enter New Category Here">
+                            <a href="#" class="btn btn-primary mt-3" id='addcatbtn'>Add</a>
+                        </div>
+                        <div class="card-footer text-body-secondary">
+                            <div id='addcatstatus'>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col d-flex justify-content-center mt-3">
+
+                    <div class="card text-center " style="width: 50%;">
+                        <div class="card-header">
+                            <h5 class="card-title">Available Category</h5>
+                        </div>
+                        <div class="card-body" id='avaicat'>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id='divallchats'>
+
+            </div>
+
+        </div>
 
 
 
