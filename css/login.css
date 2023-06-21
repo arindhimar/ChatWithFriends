@@ -4,7 +4,13 @@ body {
     margin: 0;
     padding: 0;
 }
+p {
+    text-align: center;
+}
 
+p a {
+    margin: 0 10px;
+}
 
 body {
     background-image: url('../images/try.jpg');

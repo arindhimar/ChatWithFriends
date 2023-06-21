@@ -45,14 +45,25 @@
                         </div>
                     </form>
 
-                    <div  id='loginmsg'>
-                       
+
+                    <div id='forgotdiv'>
+                        <input type="email" class="form-control mt-3" id="txtemail" placeholder="Your Email Address">
+                        <div class="mx-auto p-2" style="width: 200px;">
+                            <button type="button" class="btn btn-primary" id='sendemail'>Send</button>
+                            <div class="spinner-border spinner-border-sm" id='emailstatus'></div>
+                            <button type="button" class="btn btn-danger" id='cancelforget'>Cancel</button>
+                        </div>
                     </div>
+
+                    <div id='loginmsg'>
+
+                    </div>
+
 
 
                 </div>
                 <div class="card-footer text-body-secondary">
-                    <p>Forgot Credentials??<a href="#">Click Here</a></p>
+                    <p><a href="#" id='forgot'>Forgot Credentials</a>New User?<a href="#" id='newuser'>Register Here</a></p>
                 </div>
             </div>
         </div>
