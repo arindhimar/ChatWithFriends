@@ -338,7 +338,7 @@ if ($flag == 1) {
 
 
         echo '<li class="clearfix" onclick=chat(' . $temp['uid'] . ')>
-                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="avatar">
+                    <img src="'.$temp['profilePicture'].'" alt="avatar">
                     <div class="about">
                         <div class="name">' . $temp['uname'] . '</div>
                         <div class="status">' . $itemp2['aname'] . ',' . $itemp3['aname'] . ',' . $itemp4['aname'] . '</div>
@@ -545,8 +545,6 @@ if ($flag == 1) {
 
     // echo $query;
 
-    
-
     $res = mysqli_query($con, $query);
 
     $temp=mysqli_fetch_assoc($res);
@@ -590,7 +588,8 @@ if ($flag == 1) {
         'uname' => $temp['uname'],
         'a1' => $itemp2['aname'],
         'a2' => $itemp3['aname'],
-        'a3' => $itemp4['aname']
+        'a3' => $itemp4['aname'],
+        'imgPath'=>$temp['profilePicture']
     );
 
     $olddata = json_encode($temparr);
@@ -616,6 +615,7 @@ else if($flag==19){
                 </li>';
         }
     }
+    // echo '<a id="scrollAnchor"></a>';
 
 }
 else if($flag==20){

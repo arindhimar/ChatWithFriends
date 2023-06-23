@@ -1,18 +1,21 @@
 function chat(targetId) {
+
     //Request for target profile
-    localStorage.setItem('targetId',targetId);
-    let temp = { flag: 18, uid: targetId };
+    localStorage.setItem('targetId', targetId);
+    let temp = { flag: 18, uid: localStorage.getItem('targetId') };
+    // console.log(temp);
     $.ajax({
         type: "POST",
         url: "ajax/ajax.php",
         data: temp,
         // dataType: "dataType",
         success: function (response) {
+            // console.log(response);
             let userData = JSON.parse(response);
-            // console.log(userData.uname);
+
             $('#targetName').html(userData.uname);
             $('#targetActivity').html(userData.a1 + "," + userData.a2 + "," + userData.a3);
-
+            $("#targetImage").attr("src", userData.imgPath);
 
             //Request for chat 
             temp = { flag: 19, sdid: localStorage.getItem('self'), rcid: localStorage.getItem('targetId'), chid: 0 };
@@ -25,11 +28,32 @@ function chat(targetId) {
                     // console.log(response);
                     $('#userChatDiv').html(response);
                     $('#chatmain').show();
+                    var scrollAnchor = document.getElementById('scrollAnchor');
+                    scrollAnchor.scrollIntoView();
+                    setInterval(update, 2000);
                 }
             });
         }
     });
     // setInterval(chat(targetId),1000);
+}
+
+function update() {
+    //Request for chat 
+    temp = { flag: 19, sdid: localStorage.getItem('self'), rcid: localStorage.getItem('targetId'), chid: 0 };
+    $.ajax({
+        type: "POST",
+        url: "ajax/ajax.php",
+        data: temp,
+        // dataType: "dataType",
+        success: function (response) {    
+            if(response!=$('#userChatDiv').html()){
+                $('#userChatDiv').html(response);
+                var scrollAnchor = document.getElementById('scrollAnchor');
+                scrollAnchor.scrollIntoView();
+            }
+        }
+    });
 }
 
 $(document).ready(function () {
@@ -77,39 +101,32 @@ $(document).ready(function () {
         });
     }
 
-
-    //Checking if Message textbox is on focus
-    $('#txtMsg').on('focus', function () {
-        //Checking if enter is pressed
-        $('#txtMsg').on('keypress', function (event) {
+    // Checking if Message textbox is on focus
+    $(document).on('focus', '#txtMsg', function () {
+        // Registering the keypress event handler
+        $(document).one('keypress', '#txtMsg', function (event) {
             if (event.which === 13) {
-                // console.log("Enter key is pressed");
-                //If non empty msg
                 if ($('#txtMsg').val() != '') {
                     temp = { flag: 20, sdid: localStorage.getItem('self'), rcid: localStorage.getItem('targetId'), txtMsg: $('#txtMsg').val() };
-
-                    // console.log(temp);
-
+                    console.log('called');
+                    // Request to send the message
                     $.ajax({
                         type: "POST",
                         url: "ajax/ajax.php",
                         data: temp,
-                        // dataType: "dataType",
                         success: function (response) {
-                            // console.log(response);
                             if (response == 'sent') {
                                 $('#txtMsg').val('');
                             }
                             else {
-
+                                // Handle the response if needed
                             }
                         }
                     });
                 }
             }
         });
-    })
-
+    });
 
     //Display All Friends
     //Req For Data for Display
@@ -128,9 +145,8 @@ $(document).ready(function () {
         }
     });
 
-
     //User Search On the Basis of name and category
-    $('#searchtxt,#act1').on('change', function () {
+    $(document).on('change', '#searchtxt, #act1', function () {
         temp = { flag: 8, uname: $('#searchtxt').val(), ucategory: $('#act1').val(), self: localStorage.getItem("self") };
         $.ajax({
             type: "POST",
@@ -144,10 +160,7 @@ $(document).ready(function () {
                 $('#divallfriends').slideDown(250);
             }
         });
-    })
-
-
-
+    });
 
     function defaultConfig() {
         $('#chatmain').hide();
@@ -156,5 +169,4 @@ $(document).ready(function () {
     //Default Configuration
     fillCategory();
     defaultConfig();
-
 });

@@ -70,7 +70,7 @@
                                     <div class="status"> <i class="fa fa-circle online"></i> online </div>
                                 </div>
                             </li>
-                            <li class="clearfix" >
+                            <li class="clearfix">
                                 <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="avatar">
                                 <div class="about">
                                     <div class="name">Dean Henry</div>
@@ -85,7 +85,7 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     <a href="javascript:void(0);" data-toggle="modal" data-target="#view_info">
-                                        <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="avatar" id='targetImage'>
+                                        <img src="http://localhost/chatwithfriends/images/arin.jpg" alt="avatar" id='targetImage'>
                                     </a>
                                     <div class="chat-about">
                                         <h6 class="m-b-0" id='targetName'>Aiden Chavez</h6>
@@ -97,14 +97,14 @@
                                     <!-- <a href="javascript:void(0);" class="btn btn-outline-primary"><i class="fa fa-image"></i></a>
                                     <a href="javascript:void(0);" class="btn btn-outline-info"><i class="fa fa-cogs"></i></a>
                                     <a href="javascript:void(0);" class="btn btn-outline-warning"><i class="fa fa-question"></i></a> -->
-                                    
+
                                 </div>
                             </div>
                         </div>
 
 
 
-                        <div class="chat-history">
+                        <div class="chat-history" id='chatscreen'>
                             <ul class="m-b-0" id='userChatDiv'>
                                 <li class="clearfix">
                                     <!-- <div class="message-data text-right">
@@ -120,6 +120,7 @@
                                     <div class="message my-message">Project has been already finished and I have results to show you.</div>
                                 </li>
                             </ul>
+                            <a id="scrollAnchor"></a>
                         </div>
 
 
