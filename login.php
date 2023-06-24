@@ -1,3 +1,7 @@
+<?php
+require'try.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -34,12 +38,32 @@
                                 <input type="text" class="form-control" id="txtuser">
                             </div>
                         </div>
+
+
                         <div class="mb-0 row">
                             <label for="inputPassword" class="col-sm-2 form-label">Password</label>
                             <div class="col-sm-10">
                                 <input type="password" class="form-control" id="txtpass">
                             </div>
                         </div>
+
+
+                        <div class="row mt-3">
+
+                            <div class="col">
+                                <label for="inputCaptcha" class="col-sm-2 form-label">Captcha</label>
+                            </div>
+
+                            <div class="col">
+                                <img src="new.jpg" id='captchaImg'>
+                            </div>
+
+                            <div class="col">
+                                <input type="text" class="form-control" id="txtCaptcha">
+                            </div>
+                        </div>
+
+
                         <div class="d-grid gap-2 col-3 mx-auto mt-3">
                             <button class="btn btn-primary" type="button" id='loginbtn'>Login</button>
                         </div>

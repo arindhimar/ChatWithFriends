@@ -1,5 +1,7 @@
 $(document).ready(function () {
 
+    let temp;
+    
     let currentURL = window.location.href;
     if ((/[?]{1}/ig).test(currentURL)) {
         // Modify the URL
@@ -10,12 +12,50 @@ $(document).ready(function () {
 
 
         //Saving the UID 
-        var uid = newURL[1].split("=")[1];
+        var uid = newURL[1].split("=")[1]
 
+        localStorage.setItem('accessType', newURL[2].split('=')[1]);
+
+        if (newURL[2].split('=')[1] == 0) {
+
+        }
+        else if (newURL[2].split('=')[1] == 1) {
+            // $('#txtname').hide();
+            // $('#txtemail').hide();
+            // $('#act').hide();
+            // $('#txtname').show();
+            // $('#txtname').show();
+            // $('#txtname').show();
+            // let form=document.querySelector('form');
+            // console.log(form[0]);
+            // for(let i=0;i<form.length;i++){
+            //     form[i].style.display = "none";
+            // }
+            // form[2].style.display = "block";
+
+            let divs = document.getElementsByClassName('m-3');
+
+            for (let i = 0; i < divs.length; i++) {
+                divs[i].style.display = 'none';
+            }
+
+            //Category div
+            let optdiv = document.getElementsByClassName('row g-3 m-2');
+            optdiv[0].style.display = 'none';
+
+            //Password div
+            divs[2].style.display = 'block';
+        }
+        else if (newURL[2].split('=')[1] == 2) {
+            let divs = document.getElementsByClassName('m-3');
+
+            //Password div
+            divs[2].style.display = 'none';
+        }
     }
 
     function closethis() {
-        uid=null;
+        uid = null;
     }
 
     //Clearing form data
@@ -27,7 +67,7 @@ $(document).ready(function () {
     }
 
     //Adding the category
-    let temp = { flag: 4 };
+    temp = { flag: 4 };
     $.ajax({
         type: "POST",
         url: "ajax/ajax.php",
@@ -88,6 +128,7 @@ $(document).ready(function () {
         let ptpass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
         if (ptname.test($('#txtname').val()) == true && ptemail.test($('#txtemail').val()) == true && ptpass.test($('#txtpass').val()) == true) {
+            //Check if all category are different
             if ($('#act1').val() == $('#act2').val() || $('#act2').val() == $('#act3').val() || $('#act3').val() == $('#act1').val()) {
                 // alert('sahdah')
                 $("#addaccstatus").html('Please Select Diffrent activity!!');
@@ -95,59 +136,95 @@ $(document).ready(function () {
                 $('#addaccstatus').fadeIn(50).delay(2000).fadeOut(50);
             }
             else {
-                $('#addaccbtn').prop('disabled', true);
-                $('#confirmaddacc').fadeIn(50);
-                $('#verifyadddbtn').on('click', function (event) {
-                    event.preventDefault();
-                    let temp = { flag: 2, upass: $('#txtadminpass').val() };
-                    $.ajax({
-                        type: "POST",
-                        url: "ajax/ajax.php",
-                        data: temp,
-                        // dataType: "dataType",
-                        success: function (response) {
-                            // console.log(response);
-                            if (response == 'true') {
-                                let temp = { flag: 13, uid: uid, uname: $('#txtname').val(), uemail: $('#txtemail').val(), upass: $('#txtpass').val(), act1: $('#act1').val(), act2: $('#act2').val(), act3: $('#act3').val() };
-                                // console.log(temp);
-                                $.ajax({
-                                    type: "POST",
-                                    url: "ajax/ajax.php",
-                                    data: temp,
-                                    // dataType: "dataType",
-                                    success: function (response) {
-                                        if (response == 'true') {
-                                            $("#addaccstatus").html('User Updated !! The page data will be closed in 3 seconds!!');
-                                            $('#addaccstatus').addClass('alert alert-success m-3');
-                                            $('#addaccstatus').fadeIn(50).delay(2000).fadeOut(50);
-                                            $('#confirmaddacc').fadeOut(3000);
+                //All inputs fields satisfied
 
-                                            clearuserform();
+                //Checking if request id by user(1,2) than no requirment for admin password but requires captcha
+                if (localStorage.getItem('accessType') == 2 || localStorage.getItem('accessType') == 1) {
+
+
+                    // let temp = { flag: 13, uid: uid, uname: $('#txtname').val(), uemail: $('#txtemail').val(), upass: $('#txtpass').val(), act1: $('#act1').val(), act2: $('#act2').val(), act3: $('#act3').val() };
+                    // // console.log(temp);
+                    // $.ajax({
+                    //     type: "POST",
+                    //     url: "ajax/ajax.php",
+                    //     data: temp,
+                    //     // dataType: "dataType",
+                    //     success: function (response) {
+                    //         if (response == 'true') {
+                    //             $("#addaccstatus").html('User Updated !! The page data will be closed in 3 seconds!!');
+                    //             $('#addaccstatus').addClass('alert alert-success m-3');
+                    //             $('#addaccstatus').fadeIn(50).delay(2000).fadeOut(50);
+                    //             $('#confirmaddacc').fadeOut(3000);
+                    //             clearuserform();
+                    //         }
+                    //         else {
+                    //             $("#addaccstatus").html('Something Went wrong The page will no longer be useful in 3 seconds!!');
+                    //             $('#addaccstatus').addClass('alert alert-danger m-3');
+                    //             $('#addaccstatus').fadeIn(50).delay(2000).fadeOut(50);
+                    //             $('#confirmaddacc').fadeOut(2000);
+                    //             clearuserform();
+                    //         }
+                    //     }
+                    // });
+                }
+                else {
+
+                    $('#addaccbtn').prop('disabled', true);
+                    $('#confirmaddacc').fadeIn(50);
+                    $('#verifyadddbtn').on('click', function (event) {
+                        event.preventDefault();
+                        let temp = { flag: 2, upass: $('#txtadminpass').val() };
+                        $.ajax({
+                            type: "POST",
+                            url: "ajax/ajax.php",
+                            data: temp,
+                            // dataType: "dataType",
+                            success: function (response) {
+                                // console.log(response);
+                                if (response == 'true') {
+                                    let temp = { flag: 13, uid: uid, uname: $('#txtname').val(), uemail: $('#txtemail').val(), upass: $('#txtpass').val(), act1: $('#act1').val(), act2: $('#act2').val(), act3: $('#act3').val() };
+                                    // console.log(temp);
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "ajax/ajax.php",
+                                        data: temp,
+                                        // dataType: "dataType",
+                                        success: function (response) {
+                                            if (response == 'true') {
+                                                $("#addaccstatus").html('User Updated !! The page data will be closed in 3 seconds!!');
+                                                $('#addaccstatus').addClass('alert alert-success m-3');
+                                                $('#addaccstatus').fadeIn(50).delay(2000).fadeOut(50);
+                                                $('#confirmaddacc').fadeOut(3000);
+
+                                                clearuserform();
+                                            }
+                                            else {
+                                                $("#addaccstatus").html('Something Went wrong The page will no longer be useful in 3 seconds!!');
+                                                $('#addaccstatus').addClass('alert alert-danger m-3');
+                                                $('#addaccstatus').fadeIn(50).delay(2000).fadeOut(50);
+                                                $('#confirmaddacc').fadeOut(2000);
+                                                clearuserform();
+
+                                            }
                                         }
-                                        else {
-                                            $("#addaccstatus").html('Something Went wrong The page will no longer be useful in 3 seconds!!');
-                                            $('#addaccstatus').addClass('alert alert-danger m-3');
-                                            $('#addaccstatus').fadeIn(50).delay(2000).fadeOut(50);
-                                            $('#confirmaddacc').fadeOut(2000);
-                                            clearuserform();
+                                    });
+                                }
+                                else {
+                                    $("#addaccstatus").html('Invalid Admin Password . The page will no longer be useful in 3 seconds!!');
+                                    $('#addaccstatus').addClass('alert alert-danger m-3');
+                                    $('#addaccstatus').fadeIn(50).delay(2000).fadeOut(50);
+                                    $('#confirmaddacc').fadeOut(2000); 4
+                                    clearuserform();
+                                    $('#addaccbtn').prop('disabled', false);
+                                }
 
-                                        }
-                                    }
-                                });
+                                setTimeout(closethis, 3000);
                             }
-                            else {
-                                $("#addaccstatus").html('Invalid Admin Password . The page will no longer be useful in 3 seconds!!');
-                                $('#addaccstatus').addClass('alert alert-danger m-3');
-                                $('#addaccstatus').fadeIn(50).delay(2000).fadeOut(50);
-                                $('#confirmaddacc').fadeOut(2000); 4
-                                clearuserform();
-                                $('#addaccbtn').prop('disabled', false);
-                            }
+                        });
 
-                            setTimeout(closethis, 3000);
-                        }
-                    });
-                })
+                    })
+                }
+
             }
         }
         else {

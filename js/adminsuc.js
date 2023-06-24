@@ -1,5 +1,5 @@
 function updateacc(x) {
-    window.location.href = "update.php?id=" + x + "?=a";
+    window.location.href = "update.php?id=" + x + "?=0";
 }
 
 function del(x) {
@@ -84,11 +84,6 @@ $(document).ready(function () {
             });
         }
     });
-
-
-
-
-
 
     //Nav - 1 Display all account
     $('#navaccdisp').on('click', function (event) {
@@ -259,6 +254,7 @@ $(document).ready(function () {
 
     })
 
+    //Nav Add Category
     $('#navaddcat').on('click', function (event) {
         event.preventDefault();
         hidenav();
@@ -330,6 +326,7 @@ $(document).ready(function () {
         })
     })
 
+    //Nav DispChat
     $('#navdispchat').on('click',function(event){
         event.preventDefault();
         removeactive();

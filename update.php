@@ -35,7 +35,7 @@
                 <input type="password" class="form-control" id="txtpass" placeholder="Enter Password Here">
             </div>
             <div class="row g-3 m-2">
-                <label for="Interest" class="form-label">User's Interest</label>
+                <label for="Interest" id='act' class="form-label">User's Interest</label>
                 <div class="col-sm-4">
                     <select class="form-select" id='act1' aria-label="Default select example">
                         <!-- <option selected>Open this select menu</option> -->
@@ -64,7 +64,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 
 </body>

@@ -1,5 +1,6 @@
 <?php
-
+header('content-type:image/jpeg');
+session_start();
 require 'connection.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
@@ -38,6 +39,7 @@ function smtp_mailer($to, $subject, $msg)
     }
 }
 
+
 $flag = $_POST['flag'];
 
 if ($flag == 1) {
@@ -55,7 +57,7 @@ if ($flag == 1) {
         if ($temp['utype'] == 'admin') {
             echo 'adminsuc.php';
         } else {
-            echo 'usersuc.php?id=' . $uid . '';
+            echo 'chat.php?uid=' . $uid . '';
         }
     } else {
         echo "invalid";
@@ -345,9 +347,20 @@ if ($flag == 1) {
                     </div>
                 </li>';
     }
-} else if ($flag == 9) //Request for chat
+} else if ($flag == 9) //Request for captcha
 {
-} else if ($flag == 10) {
+    // genCaptcha();
+
+
+
+    $tArr=array('captcha'=>$_SESSION['captcha']);
+    
+    $response = json_encode($tArr);
+
+    echo $response;
+
+} 
+else if ($flag == 10) {
     $query = 'select * from activitytb';
 
     $res = mysqli_query($con, $query);
@@ -409,6 +422,7 @@ if ($flag == 1) {
     $olddata = json_encode($temparr);
 
     echo $olddata;
+
 } else if ($flag == 13) {
     $uid = $_POST['uid'];
     $uname = mysqli_escape_string($con, $_POST['uname']);
@@ -507,8 +521,9 @@ if ($flag == 1) {
     $res = mysqli_query($con, $query);
 
     if (mysqli_num_rows($res) > 0) {
+        $temp=mysqli_fetch_assoc($res);
         $subject = 'Account Recovery';
-        $msg = 'An account recover and update has been requested for this email ' . '<br/>' . 'Update link = ';
+        $msg = 'An account recover and update has been requested for this email ' . '<br/>' . 'Update link = http://localhost/chatwithfriends/update.php?id='.$temp['uid'].'?='.$_POST['accessType'].' ';
         $req = smtp_mailer($email, $subject, $msg);
         echo $req;
     } else {

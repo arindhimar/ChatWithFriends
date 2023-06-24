@@ -85,7 +85,7 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     <a href="javascript:void(0);" data-toggle="modal" data-target="#view_info">
-                                        <img src="http://localhost/chatwithfriends/images/arin.jpg" alt="avatar" id='targetImage'>
+                                        <img src="" alt="avatar" id='targetImage'>
                                     </a>
                                     <div class="chat-about">
                                         <h6 class="m-b-0" id='targetName'>Aiden Chavez</h6>
