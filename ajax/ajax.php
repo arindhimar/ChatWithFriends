@@ -294,9 +294,10 @@ if ($flag == 1) {
 
 
 
-    $query = 'select * from usertb where uname like "' . $uname . '%" and utype="user" and uid <> ' . $self . ' order by uid asc';
+    $query = 'select * from usertb where  utype="user" and uid in(select uid from useracttb where aid1 in(select aid from activitytb where aname = "'.$ucategory.'") and uid <> '.$self.'  and uname like "'.$uname.'%") or uid in(select uid from useracttb where aid2 in(select aid from activitytb where aname = "'.$ucategory.'") and uid <> '.$self.'  and uname like "'.$uname.'%" ) or uid in(select uid from useracttb where aid3 in(select aid from activitytb where aname = "'.$ucategory.'") and uid <> '.$self.'  and uname like "'.$uname.'%") order by uid asc;';
 
 
+    // echo $query;
 
     $res = mysqli_query($con, $query);
 
