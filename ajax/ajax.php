@@ -39,9 +39,45 @@ function smtp_mailer($to, $subject, $msg)
     }
 }
 
+function validateimage()
+{
+    $target_dir = '../images/';
+    $result = array();
+
+    // Check if the file was uploaded without errors
+    if (isset($_FILES['imgfile']) && $_FILES['imgfile']['error'] === UPLOAD_ERR_OK) {
+        $target_file = $target_dir . basename($_FILES['imgfile']['name']);
+        $image_type = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+        $filesize = $_FILES['imgfile']['size'];
+
+        // Check file type
+        if ($image_type != 'jpg' && $image_type != 'jpeg' && $image_type != 'png') {
+            $result['status'] = 2; // file type is not PNG, JPG, or JPEG
+            $result['message'] = 'File type is not PNG, JPG, or JPEG';
+        } elseif ($filesize > 512000) {
+            $result['status'] = 3; // file size is greater than 5 MB
+            $result['message'] = 'File is too large';
+        } else {
+            $upload_path = $target_dir . uniqid() . '.' . $image_type;
+            $result['status'] = 1; // file is valid
+            $result['message'] = 'File is valid';
+        }
+    } else {
+        $result['status'] = 0; // no file was uploaded or there was an error
+        $result['message'] = 'No file was uploaded';
+    }
+
+    echo json_encode($result);
+}
+
+
+
+
 
 $flag = $_POST['flag'];
 
+
+//login request 
 if ($flag == 1) {
     $uid = mysqli_escape_string($con, $_POST['uid']);
     $upass = mysqli_escape_string($con, $_POST['upass']);
@@ -62,7 +98,7 @@ if ($flag == 1) {
     } else {
         echo "invalid";
     }
-} elseif ($flag == 2) {
+} elseif ($flag == 2) { //admin
     // echo"false"; 
     $upass = mysqli_escape_string($con, $_POST['upass']);
     $query = 'select upass from usertb where uid=11011 and upass="' . $upass . '"';
@@ -72,56 +108,75 @@ if ($flag == 1) {
     if (mysqli_num_rows($res) > 0) {
         echo "true";
     }
-} elseif ($flag == 3) {
+} elseif ($flag == 3) { //insert data for user
     $uname = mysqli_escape_string($con, $_POST['uname']);
     $uemail = mysqli_escape_string($con, $_POST['uemail']);
     $upass = mysqli_escape_string($con, $_POST['upass']);
 
-    $query = "INSERT INTO `usertb`(`uname`, `upass`, `utype`, `uemail`) VALUES ('$uname','$upass','user','$uemail')";
+    $flag = false; // Flag variable to track execution
 
-    $res = mysqli_query($con, $query);
+    if (!empty($_FILES['imgfile']['name'])) {
+        $target_dir = '../images/';
+        $target_file = $target_dir . basename($_FILES['imgfile']['name']);
+        $image_type = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+        $filesize = $_FILES['imgfile']['size'];
+        $uniqueid = uniqid();
+        $upload_path = $target_dir . $uniqueid . '.' . $image_type;
 
-    $act1 = mysqli_escape_string($con, $_POST['act1']);
-    $act2 = mysqli_escape_string($con, $_POST['act2']);
-    $act3 = mysqli_escape_string($con, $_POST['act3']);
+        if (move_uploaded_file($_FILES['imgfile']['tmp_name'], $upload_path)) {
+            $path = 'localhost/' . $uniqueid . '.' . $image_type;
 
-    $query = 'select aid from activitytb where aname="' . $act1 . '"';
+            $query = "INSERT INTO `usertb`(`uname`, `upass`, `utype`, `uemail`,`uimage`) VALUES ('$uname','$upass','user','$uemail','$path')";
 
-    $res = mysqli_query($con, $query);
+            $res = mysqli_query($con, $query);
 
-    $temp = mysqli_fetch_assoc($res);
+            $act1 = mysqli_escape_string($con, $_POST['act1']);
+            $act2 = mysqli_escape_string($con, $_POST['act2']);
+            $act3 = mysqli_escape_string($con, $_POST['act3']);
 
-    $uid1 = $temp['aid'];
+            $query = 'select aid from activitytb where aname="' . $act1 . '"';
 
-    $query = 'select aid from activitytb where aname="' . $act2 . '"';
+            $res = mysqli_query($con, $query);
 
-    $res = mysqli_query($con, $query);
+            $temp = mysqli_fetch_assoc($res);
 
-    $temp = mysqli_fetch_assoc($res);
+            $uid1 = $temp['aid'];
 
-    $uid2 = $temp['aid'];
+            $query = 'select aid from activitytb where aname="' . $act2 . '"';
 
-    $query = 'select aid from activitytb where aname="' . $act3 . '"';
+            $res = mysqli_query($con, $query);
 
-    $res = mysqli_query($con, $query);
+            $temp = mysqli_fetch_assoc($res);
 
-    $temp = mysqli_fetch_assoc($res);
+            $uid2 = $temp['aid'];
 
-    $uid3 = $temp['aid'];
+            $query = 'select aid from activitytb where aname="' . $act3 . '"';
 
-    $query = 'select uid from usertb order by uid desc';
+            $res = mysqli_query($con, $query);
 
-    $res = mysqli_query($con, $query);
+            $temp = mysqli_fetch_assoc($res);
 
-    $temp = mysqli_fetch_assoc($res);
+            $uid3 = $temp['aid'];
 
-    $uid = $temp["uid"];
+            $query = 'select uid from usertb order by uid desc';
 
-    $query = "INSERT INTO `useracttb`(`uid`, `aid1`, `aid2`, `aid3`) VALUES ($uid,$uid1,$uid2,$uid3)";
+            $res = mysqli_query($con, $query);
 
-    $res = mysqli_query($con, $query);
+            $temp = mysqli_fetch_assoc($res);
 
-    echo "true";
+            $uid = $temp["uid"];
+
+            $query = "INSERT INTO `useracttb`(`uid`, `aid1`, `aid2`, `aid3`) VALUES ($uid,$uid1,$uid2,$uid3)";
+
+            $res = mysqli_query($con, $query);
+
+            $flag = true; // Set the flag to true after execution
+        }
+    }
+
+    if ($flag) {
+        echo "true";
+    }
 } elseif ($flag == 4) {
     $query = 'select * from activitytb';
 
@@ -204,6 +259,10 @@ if ($flag == 1) {
 } elseif ($flag == 6) {
 
     $uid = mysqli_escape_string($con, $_POST['uid']);
+
+    $query='DELETE FROM `useracttb` WHERE uid='.$uid.'';    
+
+    $res = mysqli_query($con, $query);
 
     $query = 'DELETE FROM `usertb` WHERE uid=' . $uid . '';
 
@@ -294,7 +353,7 @@ if ($flag == 1) {
 
 
 
-    $query = 'select * from usertb where  utype="user" and uid in(select uid from useracttb where aid1 in(select aid from activitytb where aname = "'.$ucategory.'") and uid <> '.$self.'  and uname like "'.$uname.'%") or uid in(select uid from useracttb where aid2 in(select aid from activitytb where aname = "'.$ucategory.'") and uid <> '.$self.'  and uname like "'.$uname.'%" ) or uid in(select uid from useracttb where aid3 in(select aid from activitytb where aname = "'.$ucategory.'") and uid <> '.$self.'  and uname like "'.$uname.'%") order by uid asc;';
+    $query = 'select * from usertb where  utype="user" and uid in(select uid from useracttb where aid1 in(select aid from activitytb where aname = "' . $ucategory . '") and uid <> ' . $self . '  and uname like "' . $uname . '%") or uid in(select uid from useracttb where aid2 in(select aid from activitytb where aname = "' . $ucategory . '") and uid <> ' . $self . '  and uname like "' . $uname . '%" ) or uid in(select uid from useracttb where aid3 in(select aid from activitytb where aname = "' . $ucategory . '") and uid <> ' . $self . '  and uname like "' . $uname . '%") order by uid asc;';
 
 
     // echo $query;
@@ -341,7 +400,7 @@ if ($flag == 1) {
 
 
         echo '<li class="clearfix" onclick=chat(' . $temp['uid'] . ')>
-                    <img src="'.$temp['profilePicture'].'" alt="avatar">
+                    <img src="' . $temp['profilePicture'] . '" alt="avatar">
                     <div class="about">
                         <div class="name">' . $temp['uname'] . '</div>
                         <div class="status">' . $itemp2['aname'] . ',' . $itemp3['aname'] . ',' . $itemp4['aname'] . '</div>
@@ -354,14 +413,12 @@ if ($flag == 1) {
 
 
 
-    $tArr=array('captcha'=>$_SESSION['captcha']);
-    
+    $tArr = array('captcha' => $_SESSION['captcha']);
+
     $response = json_encode($tArr);
 
     echo $response;
-
-} 
-else if ($flag == 10) {
+} else if ($flag == 10) {
     $query = 'select * from activitytb';
 
     $res = mysqli_query($con, $query);
@@ -423,7 +480,6 @@ else if ($flag == 10) {
     $olddata = json_encode($temparr);
 
     echo $olddata;
-
 } else if ($flag == 13) {
     $uid = $_POST['uid'];
     $uname = mysqli_escape_string($con, $_POST['uname']);
@@ -522,9 +578,9 @@ else if ($flag == 10) {
     $res = mysqli_query($con, $query);
 
     if (mysqli_num_rows($res) > 0) {
-        $temp=mysqli_fetch_assoc($res);
+        $temp = mysqli_fetch_assoc($res);
         $subject = 'Account Recovery';
-        $msg = 'An account recover and update has been requested for this email ' . '<br/>' . 'Update link = http://localhost/chatwithfriends/update.php?id='.$temp['uid'].'?='.$_POST['accessType'].' ';
+        $msg = 'An account recover and update has been requested for this email ' . '<br/>' . 'Update link = http://localhost/chatwithfriends/update.php?id=' . $temp['uid'] . '?=' . $_POST['accessType'] . ' ';
         $req = smtp_mailer($email, $subject, $msg);
         echo $req;
     } else {
@@ -555,7 +611,7 @@ else if ($flag == 10) {
         echo 'done';
     }
 } else if ($flag == 18) {
-    $uid=$_POST['uid'];
+    $uid = $_POST['uid'];
 
     $query = 'select * from usertb where uid=' . $_POST['uid'] . '';
 
@@ -563,8 +619,8 @@ else if ($flag == 10) {
 
     $res = mysqli_query($con, $query);
 
-    $temp=mysqli_fetch_assoc($res);
-    
+    $temp = mysqli_fetch_assoc($res);
+
     $iquery1 = 'select * from useracttb where uid=' . $uid . '';
 
     $ires1 = mysqli_query($con, $iquery1);
@@ -605,50 +661,47 @@ else if ($flag == 10) {
         'a1' => $itemp2['aname'],
         'a2' => $itemp3['aname'],
         'a3' => $itemp4['aname'],
-        'imgPath'=>$temp['profilePicture']
+        'imgPath' => $temp['profilePicture']
     );
 
     $olddata = json_encode($temparr);
 
     echo $olddata;
-}
-else if($flag==19){
-    $query='select * from chattb where sdid in('.$_POST['sdid'].','.$_POST['rcid'].') or rcid in('.$_POST['sdid'].','.$_POST['rcid'].')';
+} else if ($flag == 19) {
+    $query = 'select * from chattb where sdid in(' . $_POST['sdid'] . ',' . $_POST['rcid'] . ') or rcid in(' . $_POST['sdid'] . ',' . $_POST['rcid'] . ')';
     // echo $query;
-    $res=mysqli_query($con,$query);
+    $res = mysqli_query($con, $query);
 
-    while($temp=mysqli_fetch_assoc($res)){
+    while ($temp = mysqli_fetch_assoc($res)) {
 
-        if($temp['sdid']==$_POST['sdid']){            
+        if ($temp['sdid'] == $_POST['sdid']) {
             echo '<li class="clearfix">
-                    <div class="message other-message float-right">'.$temp['msgtext'].'</div>
+                    <div class="message other-message float-right">' . $temp['msgtext'] . '</div>
                 </li>';
-        }
-        else{
+        } else {
             // echo"2222";
-            echo'<li class="clearfix">
-                    <div class="message my-message">'.$temp['msgtext'].'</div>
+            echo '<li class="clearfix">
+                    <div class="message my-message">' . $temp['msgtext'] . '</div>
                 </li>';
         }
     }
     // echo '<a id="scrollAnchor"></a>';
 
-}
-else if($flag==20){
-    $sdid=$_POST['sdid'];
-    $rcid=$_POST['rcid'];
-    $txtMsg=mysqli_escape_string($con,$_POST['txtMsg']);
+} else if ($flag == 20) {
+    $sdid = $_POST['sdid'];
+    $rcid = $_POST['rcid'];
+    $txtMsg = mysqli_escape_string($con, $_POST['txtMsg']);
 
-    $query='INSERT INTO `chattb`(`sdid`, `rcid`, `msgtext`) VALUES ('.$sdid.','.$rcid.',"'.$txtMsg.'")';
+    $query = 'INSERT INTO `chattb`(`sdid`, `rcid`, `msgtext`) VALUES (' . $sdid . ',' . $rcid . ',"' . $txtMsg . '")';
 
     // echo $query;
-    $res=mysqli_query($con,$query);
+    $res = mysqli_query($con, $query);
 
-    if($res){
+    if ($res) {
         echo 'sent';
-    }
-    else{
+    } else {
         echo 'failed';
     }
-
+} else if ($flag == 21) {
+    validateimage();
 }
