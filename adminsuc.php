@@ -290,7 +290,7 @@
 
                 </div>
 
-                <form>
+                <form enctype="multipart/form-data">
                     <div class="m-3">
                         <label for="name" class="form-label">User's Name</label>
                         <input type="text" class="form-control" id="txtname" placeholder="Enter Name Here">
@@ -302,6 +302,12 @@
                     <div class="m-3">
                         <label for="password" class="form-label">User's Password</label>
                         <input type="password" class="form-control" id="txtpass" placeholder="Enter Password Here">
+
+                    </div>
+                    <div class="m-3">
+                        <label for="ProfilePicture" class="form-label">Profile Picture</label>
+                        <input type="file" class="form-control" name="imgfile" id="imgfile" placeholder="ProfilePicture(jpg/jpeg/png)<=5mb">
+
                     </div>
                     <div class="row g-3 m-2">
                         <label for="Interest" class="form-label">User's Interest</label>

@@ -49,7 +49,7 @@ $(document).ready(function () {
 
     //removing class
     function removeactive() {
-        let navbar = [navaccdisp, navaddacc,navaddcat,navdispchat];
+        let navbar = [navaccdisp, navaddacc, navaddcat, navdispchat];
         for (let i = 0; i < navbar.length; i++) {
             $(navbar[i]).removeClass('active');
         }
@@ -60,6 +60,10 @@ $(document).ready(function () {
         $('#txtname').val('');
         $('#txtemail').val('');
         $('#txtpass').val('');
+        $('#txtadminpass').val('');
+        $('#imgfile').val('');
+        $('#addaccbtn').prop('disabled', false);
+
         // alert('dasda')
     }
 
@@ -116,6 +120,7 @@ $(document).ready(function () {
     //Nav - 2 Add account
     $('#navaddacc').on('click', function (event) {
         event.preventDefault();
+        $('#addaccbtn').prop('disabled', false);
         $('#divaddacc').slideDown(250);
 
         removeactive();
@@ -163,6 +168,44 @@ $(document).ready(function () {
             }
         });
 
+        //image upload event
+        $('#imgfile').on('change', function (event) {
+            var file = event.target.files[0];
+            var formData = new FormData();
+            formData.append('flag', 21);
+            formData.append('imgfile', file);
+
+            $.ajax({
+                type: "POST",
+                url: "ajax/ajax.php",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    let result = JSON.parse(response);
+
+                    if (result.status == 1) {
+                        $('#addaccstatus').html(result.message);
+                        localStorage.setItem('filestatus', result.status);
+                        $('#addaccstatus').addClass('alert alert-success m-3');
+                        $('#addaccstatus').fadeIn(50).delay(2000).fadeOut(50);
+                    }
+                    else {
+                        $('#addaccstatus').html(result.message);
+                        localStorage.setItem('filestatus', result.status);
+                        $('#addaccstatus').addClass('alert alert-danger m-3');
+                        $('#addaccstatus').fadeIn(50).delay(2000).fadeOut(50);
+                    }
+                    setTimeout(function () {
+                        $('#addaccstatus').removeClass('alert alert-danger m-3');
+                    }, 2000);
+                },
+            });
+        });
+
+
+
+        //Submit add Button click event
         $('#addaccbtn').on('click', function (event) {
             event.preventDefault();
 
@@ -170,12 +213,15 @@ $(document).ready(function () {
             let ptemail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             let ptpass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-            if (ptname.test($('#txtname').val()) == true && ptemail.test($('#txtemail').val()) == true && ptpass.test($('#txtpass').val()) == true) {
+            if (ptname.test($('#txtname').val()) == true && ptemail.test($('#txtemail').val()) == true && ptpass.test($('#txtpass').val()) == true && localStorage.getItem('filestatus') == 1) {
                 if ($('#act1').val() == $('#act2').val() || $('#act2').val() == $('#act3').val() || $('#act3').val() == $('#act1').val()) {
                     // alert('sahdah')
                     $("#addaccstatus").html('Please Select Diffrent activity!!');
                     $('#addaccstatus').addClass('alert alert-danger m-3');
                     $('#addaccstatus').fadeIn(50).delay(2000).fadeOut(50);
+                    setTimeout(function () {
+                        $('#addaccstatus').removeClass('alert alert-danger m-3');
+                    }, 2000);
                 }
                 else {
                     $('#addaccbtn').prop('disabled', true);
@@ -190,19 +236,34 @@ $(document).ready(function () {
                             success: function (response) {
                                 // console.log(response);
                                 if (response == 'true') {
-                                    let temp = { flag: 3, uname: $('#txtname').val(), uemail: $('#txtemail').val(), upass: $('#txtpass').val(), act1: $('#act1').val(), act2: $('#act2').val(), act3: $('#act3').val() };
+                                    let temp = new FormData();
+                                    temp.append('flag', 3);
+                                    temp.append('uname', $('#txtname').val());
+                                    temp.append('uemail', $('#txtemail').val());
+                                    temp.append('upass', $('#txtpass').val());
+                                    temp.append('act1', $('#act1').val());
+                                    temp.append('act2', $('#act2').val());
+                                    temp.append('act3', $('#act3').val());
+                                    let fileInput = document.getElementById('imgfile');
+                                    temp.append('imgfile', fileInput.files[0]);
                                     // console.log(temp);
                                     $.ajax({
                                         type: "POST",
                                         url: "ajax/ajax.php",
                                         data: temp,
-                                        // dataType: "dataType",
+                                        // dataType: te,
+                                        processData: false,
+                                        contentType: false,
                                         success: function (response) {
+                                            console.log(response);
                                             if (response == 'true') {
                                                 $("#addaccstatus").html('User Added !! The Form data will be cleared in 2 seconds!!');
                                                 $('#addaccstatus').addClass('alert alert-success m-3');
                                                 $('#addaccstatus').fadeIn(50).delay(2000).fadeOut(50);
                                                 $('#confirmaddacc').fadeOut(2000);
+                                                setTimeout(function () {
+                                                    $('#addaccstatus').removeClass('alert alert-success m-3');
+                                                }, 2000);
                                                 clearuserform();
                                             }
                                             else {
@@ -210,6 +271,9 @@ $(document).ready(function () {
                                                 $('#addaccstatus').addClass('alert alert-danger m-3');
                                                 $('#addaccstatus').fadeIn(50).delay(2000).fadeOut(50);
                                                 $('#confirmaddacc').fadeOut(2000);
+                                                setTimeout(function () {
+                                                    $('#addaccstatus').removeClass('alert alert-danger m-3');
+                                                }, 2000);
                                                 clearuserform();
                                             }
                                         }
@@ -219,7 +283,10 @@ $(document).ready(function () {
                                     $("#addaccstatus").html('Invalid Admin Password The Form data will be cleared in 2 seconds!!');
                                     $('#addaccstatus').addClass('alert alert-danger m-3');
                                     $('#addaccstatus').fadeIn(50).delay(2000).fadeOut(50);
-                                    $('#confirmaddacc').fadeOut(2000); 4
+                                    $('#confirmaddacc').fadeOut(2000);
+                                    setTimeout(function () {
+                                        $('#addaccstatus').removeClass('alert alert-danger m-3');
+                                    }, 2000);
                                     clearuserform();
                                     $('#addaccbtn').prop('disabled', false);
                                 }
@@ -232,25 +299,36 @@ $(document).ready(function () {
                 let name = $('#txtname').val();
                 let email = $('#txtemail').val();
                 let pass = $('#txtpass').val();
+                console.log(ptname.test(name));
                 if (ptname.test(name) != true) {
                     $("#addaccstatus").html('Invalid Name!!');
                     $('#addaccstatus').addClass('alert alert-danger m-3');
                     $('#addaccstatus').fadeIn(50).delay(2000).fadeOut(50);
                 }
                 else if (ptemail.test(email) != true) {
-                    $("#addaccstatus").html('Invalid Name!!');
+                    $("#addaccstatus").html('Invalid Email!!');
                     $('#addaccstatus').addClass('alert alert-danger m-3');
                     $('#addaccstatus').fadeIn(50).delay(2000).fadeOut(50);
                 }
                 else if (ptpass.test(pass) != true) {
-                    $("#addaccstatus").html('Invalid Name!!');
+                    $("#addaccstatus").html('Invalid Password!!');
                     $('#addaccstatus').addClass('alert alert-danger m-3');
                     $('#addaccstatus').fadeIn(50).delay(2000).fadeOut(50);
                 }
+                else if (localStorage.getItem('filestatus') != 1) {
+                    $("#addaccstatus").html('File Issue!!');
+                    $('#addaccstatus').addClass('alert alert-danger m-3');
+                    $('#addaccstatus').fadeIn(50).delay(2000).fadeOut(50);
+                }
+                setTimeout(function () {
+                    $('#addaccstatus').removeClass('alert alert-danger m-3');
+                }, 2000);
 
             }
 
         })
+
+        $('#addaccbtn').prop('disabled', false);
 
     })
 
@@ -259,7 +337,7 @@ $(document).ready(function () {
         event.preventDefault();
         hidenav();
         removeactive();
-        
+
         $('#addcatdiv').slideDown(250);
 
         let temp = { flag: 10 };
@@ -277,7 +355,7 @@ $(document).ready(function () {
         //Show Add category Page
         $('#addcatbtn').on('click', function (event) {
             event.preventDefault();
-            
+
             let ptcat = /^[a-zA-Z]{0,}$/g;
 
             if (ptcat.test($('#txtaddcat').val())) {
@@ -327,7 +405,7 @@ $(document).ready(function () {
     })
 
     //Nav DispChat
-    $('#navdispchat').on('click',function(event){
+    $('#navdispchat').on('click', function (event) {
         event.preventDefault();
         removeactive();
         hidenav();

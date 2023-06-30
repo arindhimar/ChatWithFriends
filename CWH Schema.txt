@@ -1,0 +1,10 @@
+usertb(uid,uname,upass,uemail,utype,uemail,uimage)
+activitytb(aid,aname)
+useracttb(`uaid`, `aid1`, `aid2`, `aid3`,uid)
+friendstb(fno,uid1,uid2)
+chattb(chatid,sdid,rcid,msgtext)
+
+
+
+
+
