@@ -47,10 +47,9 @@ function update() {
         data: temp,
         // dataType: "dataType",
         success: function (response) {    
-            if(response!=$('#userChatDiv').html()){
+            console.log(response);
+            if(response!='same'){
                 $('#userChatDiv').html(response);
-                var scrollAnchor = document.getElementById('scrollAnchor');
-                scrollAnchor.scrollIntoView();
             }
         }
     });
