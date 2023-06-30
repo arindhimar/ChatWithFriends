@@ -124,7 +124,7 @@ if ($flag == 1) {
         $upload_path = $target_dir . $uniqueid . '.' . $image_type;
 
         if (move_uploaded_file($_FILES['imgfile']['tmp_name'], $upload_path)) {
-            $path = 'localhost/' . $uniqueid . '.' . $image_type;
+            $path = 'images/' . $uniqueid . '.' . $image_type;
 
             $query = "INSERT INTO `usertb`(`uname`, `upass`, `utype`, `uemail`,`uimage`) VALUES ('$uname','$upass','user','$uemail','$path')";
 
@@ -400,7 +400,7 @@ if ($flag == 1) {
 
 
         echo '<li class="clearfix" onclick=chat(' . $temp['uid'] . ')>
-                    <img src="' . $temp['profilePicture'] . '" alt="avatar">
+                    <img src="' . $temp['uimage'] . '" alt="avatar">
                     <div class="about">
                         <div class="name">' . $temp['uname'] . '</div>
                         <div class="status">' . $itemp2['aname'] . ',' . $itemp3['aname'] . ',' . $itemp4['aname'] . '</div>
@@ -661,7 +661,7 @@ if ($flag == 1) {
         'a1' => $itemp2['aname'],
         'a2' => $itemp3['aname'],
         'a3' => $itemp4['aname'],
-        'imgPath' => $temp['profilePicture']
+        'imgPath' => $temp['uimage']
     );
 
     $olddata = json_encode($temparr);
@@ -672,20 +672,30 @@ if ($flag == 1) {
     // echo $query;
     $res = mysqli_query($con, $query);
 
-    while ($temp = mysqli_fetch_assoc($res)) {
-
-        if ($temp['sdid'] == $_POST['sdid']) {
-            echo '<li class="clearfix">
+    if(!isset($_SESSION['chatcount'])){
+        $_SESSION["chatcount"] = mysqli_num_rows($res);
+    }
+    else{
+        if($_SESSION['chatcount']!= mysqli_num_rows($res)){
+            $_SESSION["chatcount"] = mysqli_num_rows($res);
+            while ($temp = mysqli_fetch_assoc($res)) {
+                if ($temp['sdid'] == $_POST['sdid']) {
+                    echo '<li class="clearfix">
                     <div class="message other-message float-right">' . $temp['msgtext'] . '</div>
                 </li>';
-        } else {
-            // echo"2222";
-            echo '<li class="clearfix">
+                } else {
+                    // echo"2222";
+                    echo '<li class="clearfix">
                     <div class="message my-message">' . $temp['msgtext'] . '</div>
                 </li>';
+                }
+            }
+        }
+        else{
+            echo 'same';
         }
     }
-    // echo '<a id="scrollAnchor"></a>';
+
 
 } else if ($flag == 20) {
     $sdid = $_POST['sdid'];
