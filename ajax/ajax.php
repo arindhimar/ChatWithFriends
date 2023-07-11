@@ -353,7 +353,7 @@ if ($flag == 1) {
 
 
 
-    $query = 'select * from usertb where  utype="user" and uid in(select uid from useracttb where aid1 in(select aid from activitytb where aname = "' . $ucategory . '") and uid <> ' . $self . '  and uname like "' . $uname . '%") or uid in(select uid from useracttb where aid2 in(select aid from activitytb where aname = "' . $ucategory . '") and uid <> ' . $self . '  and uname like "' . $uname . '%" ) or uid in(select uid from useracttb where aid3 in(select aid from activitytb where aname = "' . $ucategory . '") and uid <> ' . $self . '  and uname like "' . $uname . '%") order by uid asc;';
+    $query = 'select * from usertb where  utype="user" and uid in(select uid from useracttb where aid1 in(select aid from activitytb where aname like "' . $ucategory . '%") and uid <> ' . $self . '  and uname like "' . $uname . '%") or uid in(select uid from useracttb where aid2 in(select aid from activitytb where aname like "' . $ucategory . '%") and uid <> ' . $self . '  and uname like "' . $uname . '%" ) or uid in(select uid from useracttb where aid3 in(select aid from activitytb where aname like "' . $ucategory . '%") and uid <> ' . $self . '  and uname like "' . $uname . '%") order by uid asc;';
 
 
     // echo $query;
@@ -668,7 +668,7 @@ if ($flag == 1) {
 
     echo $olddata;
 } else if ($flag == 19) {
-    $query = 'select * from chattb where sdid in(' . $_POST['sdid'] . ',' . $_POST['rcid'] . ') or rcid in(' . $_POST['sdid'] . ',' . $_POST['rcid'] . ')';
+    $query = 'select * from chattb where sdid in(' . $_POST['sdid'] . ',' . $_POST['rcid'] . ') and rcid in(' . $_POST['sdid'] . ',' . $_POST['rcid'] . ')';
     // echo $query;
     $res = mysqli_query($con, $query);
 
@@ -678,21 +678,22 @@ if ($flag == 1) {
     else{
         if($_SESSION['chatcount']!= mysqli_num_rows($res)){
             $_SESSION["chatcount"] = mysqli_num_rows($res);
-            while ($temp = mysqli_fetch_assoc($res)) {
-                if ($temp['sdid'] == $_POST['sdid']) {
-                    echo '<li class="clearfix">
-                    <div class="message other-message float-right">' . $temp['msgtext'] . '</div>
-                </li>';
-                } else {
-                    // echo"2222";
-                    echo '<li class="clearfix">
-                    <div class="message my-message">' . $temp['msgtext'] . '</div>
-                </li>';
-                }
-            }
+
         }
         else{
-            echo 'same';
+            // echo 'same';
+        }
+        while ($temp = mysqli_fetch_assoc($res)) {
+            if ($temp['sdid'] == $_POST['sdid']) {
+                echo '<li class="clearfix">
+                <div class="message other-message float-right">' . $temp['msgtext'] . '</div>
+            </li>';
+            } else {
+                // echo"2222";
+                echo '<li class="clearfix">
+                <div class="message my-message">' . $temp['msgtext'] . '</div>
+            </li>';
+            }
         }
     }
 
@@ -714,4 +715,15 @@ if ($flag == 1) {
     }
 } else if ($flag == 21) {
     validateimage();
+}
+else if($flag==22){
+    $query="select * from friendstb";
+
+    $res=mysqli_query($con,$query);
+
+    if(mysqli_num_rows($res)>0){
+        while($temp=mysqli_fetch_assoc($res)){
+            
+        }
+    }
 }

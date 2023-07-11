@@ -44,6 +44,7 @@ $(document).ready(function () {
         $('#addaccstatus').hide();
         $('#addcatdiv').hide();
         $('#divallchats').hide();
+        $('#userSearch').hide();
     }
 
 
@@ -91,9 +92,11 @@ $(document).ready(function () {
 
     //Nav - 1 Display all account
     $('#navaccdisp').on('click', function (event) {
+        
         event.preventDefault();
         removeactive();
         hidenav();
+        $('#userSearch').show();
         $('#divaccdisp').show();
         $('#navaccdisp').addClass('active');
 
@@ -409,6 +412,18 @@ $(document).ready(function () {
         event.preventDefault();
         removeactive();
         hidenav();
+
+        let temp={flag:22}
+
+        $.ajax({
+            type: "POST",
+            url: "ajax/ajax.php",
+            data: temp,
+            // dataType: "dataType",
+            success: function (response) {
+                
+            }
+        });
 
     })
 

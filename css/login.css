@@ -18,6 +18,64 @@ body {
 
 }
 
+.card {
+    width: 500px; /* Set the desired width for the card */
+    margin: auto; /* Center the card horizontally */
+    padding: 20px;
+    text-align: center;
+    background-color: #ffffff; /* Background color */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Box shadow */
+    border-radius: 10px; /* Border radius */
+    font-family: Arial, sans-serif; /* Font family */
+}
+
+.card-header {
+    background-color: #f0f0f0; /* Header background color */
+    padding: 10px;
+    border-top-left-radius: 10px; /* Rounded corners for header */
+    border-top-right-radius: 10px;
+}
+
+.card-title {
+    margin: 0;
+    font-size: 24px;
+    color: #333333; /* Title color */
+}
+
+.card-body {
+    padding-top: 20px;
+}
+
+.form-control {
+    border-radius: 5px; /* Rounded corners for input fields */
+}
+
+.btn-primary {
+    background-color: #007bff; /* Primary button background color */
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3; /* Hover background color */
+}
+
+.btn-danger {
+    background-color: #dc3545; /* Danger button background color */
+    border: none;
+}
+
+.btn-danger:hover {
+    background-color: #c82333; /* Hover background color */
+}
+
+a {
+    color: #007bff; /* Link color */
+}
+
+a:hover {
+    text-decoration: none;
+}
+
 
 .image-container {
     /* background-image: url('../images/try.jpg'); */

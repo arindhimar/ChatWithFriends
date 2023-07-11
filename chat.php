@@ -93,7 +93,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-6 hidden-sm text-right">
-                                    <a href="javascript:void(0);" style="display: flex;justify-content: flex-end;" class="btn btn-outline-danger"><i class="bi bi-person-x"></i></a>
+                                    <!-- <a href="javascript:void(0);" style="display: flex;justify-content: flex-end;" class="btn btn-outline-danger"><i class="bi bi-person-x"></i></a> -->
                                     <!-- <a href="javascript:void(0);" class="btn btn-outline-primary"><i class="fa fa-image"></i></a>
                                     <a href="javascript:void(0);" class="btn btn-outline-info"><i class="fa fa-cogs"></i></a>
                                     <a href="javascript:void(0);" class="btn btn-outline-warning"><i class="fa fa-question"></i></a> -->
@@ -106,19 +106,7 @@
 
                         <div class="chat-history" id='chatscreen'>
                             <ul class="m-b-0" id='userChatDiv'>
-                                <li class="clearfix">
-                                    <!-- <div class="message-data text-right">
-                                        <span class="message-data-time">10:10 AM, Today</span>
-                                        <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="avatar">
-                                    </div> -->
-                                    <div class="message other-message float-right"> Hi Aiden, how are you? How is the project coming along? </div>
-                                </li>
-                                <li class="clearfix">
-                                    <div class="message my-message">Are we meeting today?</div>
-                                </li>
-                                <li class="clearfix">
-                                    <div class="message my-message">Project has been already finished and I have results to show you.</div>
-                                </li>
+                                
                             </ul>
                             <a id="scrollAnchor"></a>
                         </div>

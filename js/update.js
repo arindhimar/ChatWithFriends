@@ -20,18 +20,6 @@ $(document).ready(function () {
 
         }
         else if (newURL[2].split('=')[1] == 1) {
-            // $('#txtname').hide();
-            // $('#txtemail').hide();
-            // $('#act').hide();
-            // $('#txtname').show();
-            // $('#txtname').show();
-            // $('#txtname').show();
-            // let form=document.querySelector('form');
-            // console.log(form[0]);
-            // for(let i=0;i<form.length;i++){
-            //     form[i].style.display = "none";
-            // }
-            // form[2].style.display = "block";
 
             let divs = document.getElementsByClassName('m-3');
 
@@ -45,6 +33,9 @@ $(document).ready(function () {
 
             //Password div
             divs[2].style.display = 'block';
+
+            //submit button div
+            document.getElementById('addaccbtn').style.display='block';
         }
         else if (newURL[2].split('=')[1] == 2) {
             let divs = document.getElementsByClassName('m-3');
@@ -166,6 +157,33 @@ $(document).ready(function () {
                     //         }
                     //     }
                     // });
+
+                    let temp = { flag: 13, uid: uid, uname: $('#txtname').val(), uemail: $('#txtemail').val(), upass: $('#txtpass').val(), act1: $('#act1').val(), act2: $('#act2').val(), act3: $('#act3').val() };
+                                    // console.log(temp);
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "ajax/ajax.php",
+                                        data: temp,
+                                        // dataType: "dataType",
+                                        success: function (response) {
+                                            if (response == 'true') {
+                                                $("#addaccstatus").html('User Updated !! The page data will be closed in 3 seconds!!');
+                                                $('#addaccstatus').addClass('alert alert-success m-3');
+                                                $('#addaccstatus').fadeIn(50).delay(2000).fadeOut(50);
+                                                $('#confirmaddacc').fadeOut(3000);
+
+                                                clearuserform();
+                                            }
+                                            else {
+                                                $("#addaccstatus").html('Something Went wrong The page will no longer be useful in 3 seconds!!');
+                                                $('#addaccstatus').addClass('alert alert-danger m-3');
+                                                $('#addaccstatus').fadeIn(50).delay(2000).fadeOut(50);
+                                                $('#confirmaddacc').fadeOut(2000);
+                                                clearuserform();
+
+                                            }
+                                        }
+                                    });
                 }
                 else {
 

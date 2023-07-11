@@ -108,7 +108,6 @@ $(document).ready(function () {
                         $('#loginmsg').fadeIn(1000).delay(2000).fadeOut(1000);
                         $('#loginmsg').addClass('alert alert-success mt-3');
                         $('#loginmsg').html('Email has been sent!');
-                        $('#loginmsg').html('Invalid Credenetials');
                         setTimeout(function () {
                             $('#loginmsg').removeClass('alert alert-success m-3');
 

@@ -50,6 +50,8 @@ function update() {
             console.log(response);
             if(response!='same'){
                 $('#userChatDiv').html(response);
+                var scrollAnchor = document.getElementById('scrollAnchor');
+                scrollAnchor.scrollIntoView();
             }
         }
     });
@@ -130,14 +132,14 @@ $(document).ready(function () {
     //Display All Friends
     //Req For Data for Display
     let temp = { flag: 8, uname: null, ucategory: $('#act1').val(), self: localStorage.getItem("self") };
-    // console.log(temp);
+    console.log(temp);
     $.ajax({
         type: "POST",
         url: "ajax/ajax.php",
         data: temp,
         // dataType: "dataType",
         success: function (response) {
-            // console.log(response);
+            console.log(response);
             $('#divallfriends').html(response);
             $('#divallfriends').hide();
             $('#divallfriends').slideDown(250);
