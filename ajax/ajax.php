@@ -411,8 +411,6 @@ if ($flag == 1) {
 {
     // genCaptcha();
 
-
-
     $tArr = array('captcha' => $_SESSION['captcha']);
 
     $response = json_encode($tArr);

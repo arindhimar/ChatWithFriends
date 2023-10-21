@@ -212,11 +212,11 @@ $(document).ready(function () {
         $('#addaccbtn').on('click', function (event) {
             event.preventDefault();
 
-            let ptname = /^[a-zA-Z]{0,}$/g;
+            let ptname = /^[a-zA-Z]{1,}$/g;
             let ptemail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             let ptpass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-            if (ptname.test($('#txtname').val()) == true && ptemail.test($('#txtemail').val()) == true && ptpass.test($('#txtpass').val()) == true && localStorage.getItem('filestatus') == 1) {
+            if (ptname.test($('#txtname').val()) == true&& $('#txtname').val()!="" && ptemail.test($('#txtemail').val()) == true && $('#txtemail').val()!="" && ptpass.test($('#txtpass').val()) == true && $('#txtpass').val()!="" && localStorage.getItem('filestatus') == 1) {
                 if ($('#act1').val() == $('#act2').val() || $('#act2').val() == $('#act3').val() || $('#act3').val() == $('#act1').val()) {
                     // alert('sahdah')
                     $("#addaccstatus").html('Please Select Diffrent activity!!');
@@ -361,7 +361,7 @@ $(document).ready(function () {
 
             let ptcat = /^[a-zA-Z]{0,}$/g;
 
-            if (ptcat.test($('#txtaddcat').val())) {
+            if (ptcat.test($('#txtaddcat').val())&&$('#txtaddcat').val()!="") {
                 temp = { flag: 11, txtcat: $('#txtaddcat').val() };
                 $.ajax({
                     type: "POST",
